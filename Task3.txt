@@ -1,46 +1,167 @@
-public static List<int> pairSkipedSearch(int[] inputArray)
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApplication6
 {
-	return pairSkipedSearch(inputArray, 0, inputArray.Length - 1); 
-}
+    class TestChamber
+    {
+        List<int> goodResult;
+        public int[] array;
 
-//�������� ����� ���� ��������
-private static List<int> pairSkipedSearch(int[] inputArray, int startPoint, int endPoint)
-{
-	int index = startPoint + ((endPoint - startPoint) / 2);
-	if (inputArray[index] == indexFromZero(index))
-	{
-		return pairSkipedSearch(inputArray, index + 1, endPoint);
-	}
-	if (inputArray[index] == indexFromZero(index) + 1)
-	{
-		List<int> skiped = new List<int>();
-		skiped.Add(singleSkipedSearch(inputArray, startPoint, index + 1, true));
-		skiped.Add(singleSkipedSearch(inputArray, index, endPoint, false));
-		return skiped; 
-	}
-	if (inputArray[index] == indexFromZero(index) + 2)
-	{
-		return pairSkipedSearch(inputArray, startPoint, index); 
-	}
+        public TestChamber(int arrayLength)
+        { 
+            this.array = getTestArray(arrayLength); 
+        }
 
-	return null;
-}
+        private int[] getTestArray(int Length)
+        {
+            goodResult = new List<int>();
+            Random random = new Random((int)System.DateTime.Now.Ticks);
+            int skipCount = 0;
+            int wr = 1;
+            int[] array = new int[Length];
+            int randNeed = (Length / 2);
+            for (int i = 0; i < array.Length; i++)
+            {
+                int randResult = random.Next(i / 2, array.Length - i / 2);
+                if ((randResult == randNeed) && (skipCount < 2))
+                {
+                    skipCount++;
+                    goodResult.Add(i + wr + 1);
+                    wr++;
+                }
+                array[i] = i + wr;
+            }
+            if (goodResult.Count < 2)
+            {
+                throw new Exception("Ошибка создания испытания"); 
+            }
+            return array;
+        }
 
-//�������� ����� ������ ��������
-private static int singleSkipedSearch(int[] inputArray, int startPoint, int endPoint, bool left)
-{
-	if (startPoint == endPoint)
-	{
-		return inputArray[startPoint];
-	}
+        public bool isComplite(List<int> result)
+        {
+            return ((result.First() == goodResult.First()) && (result.Last() == goodResult.Last())); 
+        }
 
-	int index = startPoint  + ((endPoint - startPoint) / 2);
-	if (inputArray[index] == indexFromZero(index) + (!left ? 1 : 0))
-	{
-		return singleSkipedSearch(inputArray, index + 1, endPoint, left);
-	}
-	else
-	{
-		return singleSkipedSearch(inputArray, startPoint, index, left);
-	}
+        public void writeLog()
+        {
+            Console.WriteLine("Верные результаты " + goodResult.First() + " " + goodResult.Last() + " Длинна массива: " + array.Length);  
+        }
+    }
+
+    class Program
+    {
+        int ELEMENT_IN_ARRAY = 5000000;
+        static void Main(string[] args)
+        {
+            Random random = new Random();
+            for (int i = 0; i < 100000; i++)
+            {
+                try
+                {
+                    var chamber = new TestChamber(random.Next(3, ELEMENT_IN_ARRAY));
+                    var testResutl = pairSkipedSearch(chamber.array);
+                    if (!chamber.isComplite(testResutl))
+                    {
+                        chamber.writeLog();
+                        Console.WriteLine("Полученые результаты: " + testResutl.First() + " " + testResutl.Last()); 
+                        Console.ReadKey(); 
+                    }
+                    else
+                    {
+                        Console.WriteLine("Good"); 
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+        }
+
+
+        public static int recFactorial(int number)
+        {
+            if (number > 0)
+                return number * recFactorial(number - 1);
+            return 1;
+        }
+
+        public static bool isBracketsСorrect(string bracketsString)
+        {
+            int incorrectBracket = 0;
+            foreach (char b in bracketsString)
+            {
+                if (b == ')')
+                {
+                    incorrectBracket++;
+                }
+                else
+                {
+                    incorrectBracket--;
+                }
+                if (incorrectBracket > 0) { return false; }
+            }
+            if (incorrectBracket == 0)
+            {
+                return true;
+            }
+            return false;
+        }
+		
+		// Исправление для нумерации массива с нуля
+        public static int indexFromZero(int index)
+        {
+            return index + 1;
+        }
+
+        public static List<int> pairSkipedSearch(int[] inputArray)
+        {
+            return pairSkipedSearch(inputArray, 0, inputArray.Length - 1); 
+        }
+
+        private static List<int> pairSkipedSearch(int[] inputArray, int startPoint, int endPoint)
+        {
+            int index = startPoint + ((endPoint - startPoint) / 2);
+            if (inputArray[index] == indexFromZero(index))
+            {
+                return pairSkipedSearch(inputArray, index + 1, endPoint);
+            }
+            if (inputArray[index] == indexFromZero(index) + 1)
+            {
+                List<int> skiped = new List<int>();
+                skiped.Add(singleSkipedSearch(inputArray, startPoint, index + 1, true));
+                skiped.Add(singleSkipedSearch(inputArray, index, endPoint, false));
+                return skiped; 
+            }
+            if (inputArray[index] == indexFromZero(index) + 2)
+            {
+                return pairSkipedSearch(inputArray, startPoint, index); 
+            }
+
+            return null;
+        }
+
+        private static int singleSkipedSearch(int[] inputArray, int startPoint, int endPoint, bool left)
+        {
+            if (startPoint == endPoint)
+            {
+                return inputArray[startPoint];
+            }
+
+            int index = startPoint  + ((endPoint - startPoint) / 2);
+            if (inputArray[index] == indexFromZero(index) + (!left ? 1 : 0))
+            {
+                return singleSkipedSearch(inputArray, index + 1, endPoint, left);
+            }
+            else
+            {
+                return singleSkipedSearch(inputArray, startPoint, index, left);
+            }
+        }
+    }
 }
