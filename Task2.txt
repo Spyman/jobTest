@@ -1,0 +1,21 @@
+public static bool isBracketsÑorrect(string bracketsString)
+{
+	int incorrectBracket = 0;
+	foreach (char b in bracketsString)
+	{
+		if (b == ')')
+		{
+			incorrectBracket++; 
+		}
+		else
+		{
+			incorrectBracket--; 
+		}
+		if (incorrectBracket > 0) { return false; }
+	}
+	if (incorrectBracket == 0)
+	{
+		return true;
+	}
+	return false; 
+}
