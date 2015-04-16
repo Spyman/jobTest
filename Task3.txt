@@ -1,0 +1,46 @@
+public static List<int> pairSkipedSearch(int[] inputArray)
+{
+	return pairSkipedSearch(inputArray, 0, inputArray.Length - 1); 
+}
+
+//бинарный поиск двух значений
+private static List<int> pairSkipedSearch(int[] inputArray, int startPoint, int endPoint)
+{
+	int index = startPoint + ((endPoint - startPoint) / 2);
+	if (inputArray[index] == indexFromZero(index))
+	{
+		return pairSkipedSearch(inputArray, index + 1, endPoint);
+	}
+	if (inputArray[index] == indexFromZero(index) + 1)
+	{
+		List<int> skiped = new List<int>();
+		skiped.Add(singleSkipedSearch(inputArray, startPoint, index + 1, true));
+		skiped.Add(singleSkipedSearch(inputArray, index, endPoint, false));
+		return skiped; 
+	}
+	if (inputArray[index] == indexFromZero(index) + 2)
+	{
+		return pairSkipedSearch(inputArray, startPoint, index); 
+	}
+
+	return null;
+}
+
+//бинарный поиск одного значения
+private static int singleSkipedSearch(int[] inputArray, int startPoint, int endPoint, bool left)
+{
+	if (startPoint == endPoint)
+	{
+		return inputArray[startPoint];
+	}
+
+	int index = startPoint  + ((endPoint - startPoint) / 2);
+	if (inputArray[index] == indexFromZero(index) + (!left ? 1 : 0))
+	{
+		return singleSkipedSearch(inputArray, index + 1, endPoint, left);
+	}
+	else
+	{
+		return singleSkipedSearch(inputArray, startPoint, index, left);
+	}
+}
