@@ -1,4 +1,4 @@
-public static bool isBrackets�orrect(string bracketsString)
+﻿public static bool isBracketsСorrect(string bracketsString)
 {
 	int incorrectBracket = 0;
 	foreach (char b in bracketsString)

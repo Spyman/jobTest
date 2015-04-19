@@ -55,7 +55,7 @@ namespace ConsoleApplication6
 
     class Program
     {
-        int ELEMENT_IN_ARRAY = 5000000;
+        int ELEMENT_IN_ARRAY = 500;
         static void Main(string[] args)
         {
             Random random = new Random();
@@ -63,7 +63,7 @@ namespace ConsoleApplication6
             {
                 try
                 {
-                    var chamber = new TestChamber(random.Next(3, ELEMENT_IN_ARRAY));
+                    var chamber = new TestChamber(random.Next(3, 5000000));
                     var testResutl = pairSkipedSearch(chamber.array);
                     if (!chamber.isComplite(testResutl))
                     {
@@ -83,37 +83,6 @@ namespace ConsoleApplication6
             }
         }
 
-
-        public static int recFactorial(int number)
-        {
-            if (number > 0)
-                return number * recFactorial(number - 1);
-            return 1;
-        }
-
-        public static bool isBracketsСorrect(string bracketsString)
-        {
-            int incorrectBracket = 0;
-            foreach (char b in bracketsString)
-            {
-                if (b == ')')
-                {
-                    incorrectBracket++;
-                }
-                else
-                {
-                    incorrectBracket--;
-                }
-                if (incorrectBracket > 0) { return false; }
-            }
-            if (incorrectBracket == 0)
-            {
-                return true;
-            }
-            return false;
-        }
-		
-		// Исправление для нумерации массива с нуля
         public static int indexFromZero(int index)
         {
             return index + 1;

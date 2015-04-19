@@ -1,4 +1,4 @@
-public static int recFactorial(int number)
+﻿public static int recFactorial(int number)
 {
 	if (number > 0)
 		return number * recFactorial(number - 1);
